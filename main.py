@@ -1,5 +1,4 @@
 # coding=utf-8
-import sys
 from enum import Enum
 talismans = []
 finaltalismans = []
@@ -47,9 +46,7 @@ class Talisman:
             self.coinsPerMagicPower = cost / self.netMagicPower
 
     def printme(self, counter):
-        print("%d: %s [%s coins] [+%d mp] [%s coins / mp] (%s)" % (
-        counter, self.name, "{:,}".format(self.cost), self.netMagicPower,
-        "{:,}".format(round(self.coinsPerMagicPower)), self.description))
+        print("%d: %s [%s coins] [+%d mp] [%s coins / mp] (%s)" % (counter, self.name, "{:,}".format(self.cost), self.netMagicPower, "{:,}".format(round(self.coinsPerMagicPower)), self.description))
 
     def haschild(self, other):
         if self.previous is None:
@@ -70,12 +67,6 @@ def compare(x, y):
         return -1
     elif x.netMagicPower < y.netMagicPower:
         return 1
-
-    if x.rarity.value > y.rarity.value:
-        return -1
-    elif x.rarity.value < y.rarity.value:
-        return 1
-
     else:
         return 0
 
@@ -111,10 +102,10 @@ def calculatebudget(budget):
 
 
 # NOTE: Defining a talisman upgrade before a previous iteration will cause problems
-# TODO add case where a talisman isn't worth getting, and the player should skip to buying the better version?
+# NOTE: A talisman or upgrade with a price of -1 is not worth going for, and the player should skip to the upgraded version
 def inittalismans():
     # name, previous talisman, rarity, cost, description
-    Talisman("Vaccine Talisman", None, Rarity.COMMON, 0, "potato collection 3, craft w/ 9 poisonous potato from the zombies found @ graveyard")
+    Talisman("Vaccine Talisman", None, Rarity.COMMON, 0, "potato collection 3, craft w/ 9 poisonous potato dropped by zombie villagers in the graveyard")
     Talisman("Farming Talisman", None, Rarity.COMMON, 0, "wheat collection 4, craft w/ 5 hay bales & 4 seeds")
     Talisman("Speed Talisman", None, Rarity.COMMON, 0, "sugarcane collection 2, craft w/ 108 sugarcane")
     Talisman("Campfire Initiate Badge", None, Rarity.COMMON, 0, "obtained via the Fire Trial in the Park")
@@ -150,7 +141,7 @@ def inittalismans():
     Talisman("Intimidation Talisman", None, Rarity.COMMON, 10000, "bought at the adventure NPC in the main hub town")
     Talisman("Campfire Cultist Badge", "Campfire Adept Badge", Rarity.RARE, 10000, "Campfire Adept Badge & 1000 spruce logs [growth 5 mush armor set at night to survive]")
     Talisman("Lava Talisman", None, Rarity.UNCOMMON, 11100, "magma cream collection 7, craft w/ 9 ench magma cream")
-    Talisman("Talisman of Power", None, Rarity.COMMON, 12000, "gemstone 2, craft w/ 45 flawed ruby gemstone")
+    Talisman("Talisman of Power", None, Rarity.COMMON, -1, "gemstone 2, craft w/ 45 flawed ruby gemstone")
     Talisman("Candy Talisman", None, Rarity.UNCOMMON, 12400, "bought w/ 16 green candy @ fear mongerer NPC")
     Talisman("Honed Shark Tooth Necklace", "Dull Shark Tooth Necklace", Rarity.RARE, 16000, "craft w/ Dull Shark Tooth Necklace & 4 blue shark teeth")
     Talisman("Fire Talisman", None, Rarity.COMMON, 17700, "blaze rod collection 5, craft w/ 9 ench blaze powder")
@@ -171,13 +162,13 @@ def inittalismans():
     Talisman("Potion Affinity Artifact", "Potion Affinity Ring", Rarity.RARE, 81000, "netherwart collection 9, craft w/ 256 ench netherwart & potion affinity ring")
     Talisman("Bat Talisman", None, Rarity.RARE, 100000, "rare drop from bats, use roofed forest island to spawn them")
     Talisman("Bat Ring", "Bat Talisman", Rarity.EPIC, 49600, "bought w/ 1 bat talisman & 64 green candy @ fear mongerer NPC")
-    Talisman("Cheetah Talisman", "Lynx Talisman", Rarity.EPIC, 200000, "obtained by completing three of the 4/4 races in the Dungeon Hub, horse pet + saddle")
+    Talisman("Cheetah Talisman", "Lynx Talisman", Rarity.EPIC, 0, "obtained by completing three of the 4/4 races in the Dungeon Hub, horse pet + saddle")
     Talisman("Campfire Scion Badge", "Campfire Cultist Badge", Rarity.EPIC, 82700, "Campfire Cultist Badge & 100 ench acacia logs [growth 5 mush armor at night w/ several health 5 potions to survive trial]")
     Talisman("Spider Talisman", None, Rarity.UNCOMMON, 120000, "travel to the peak of the spider’s den, kill a broodmother. The broodmother spawns exactly 1 hour after the previous broodmother has died. The only surefire way to find one is to wait up there")
     Talisman("Spider Ring", "Spider Talisman", Rarity.RARE, 3300, "tarantula slayer 1, craft w/ spider talisman & 64 tarantula web")
     Talisman("Sea Creature Artifact", "Sea Creature Ring", Rarity.RARE, 124000, "sponge collection 8, craft w/ 64 ench sponge & sea creature ring")
     Talisman("Mineral Talisman", None, Rarity.RARE, 155000, "craft w/ 9 refined minerals")
-    Talisman("Sharp Shark Tooth Necklace", "Honed Shark Tooth Necklace", Rarity.EPIC, 0, "craft w/ Honed Shark Tooth Necklace & 4 tiger shark teeth")
+    Talisman("Sharp Shark Tooth Necklace", "Honed Shark Tooth Necklace", Rarity.EPIC, 175000, "craft w/ Honed Shark Tooth Necklace & 4 tiger shark teeth")
     Talisman("Personal Compactor 4000", None, Rarity.UNCOMMON, 218000, "redstone collection 9, craft w/ 7 ench redstone blocks & a Super Compactor 3000")
     Talisman("BeastMaster Crest (Common)", None, Rarity.COMMON, 229000, "craft w/ 40 ancient claws & 4 griffin feathers")
     Talisman("Candy Artifact", "Candy Ring", Rarity.EPIC, 240000, "bought w/ Candy Ring & 32 purple candy @ fear mongerer NPC")
@@ -218,7 +209,7 @@ def inittalismans():
     Talisman("BeastMaster Crest (Rare)", "BeastMaster Crest (Uncommon)", Rarity.RARE, 1800000, "craft w/ 256 ancient claws & 32 griffin feathers & Uncommon BeastMaster Crest")
     Talisman("Bat Person Ring", "Bat Person Talisman", Rarity.UNCOMMON, 1800000, "craft w/ Bat Person Talisman & 4 spooky shards & 32 ectoplasm")
     Talisman("Blood God Crest", None, Rarity.COMMON, 1900000, "obtained via the Pig Shop, which is available every skyblock anniversary [June 10th]")
-    Talisman("Scarf's Thesis", None, Rarity.EPIC, 1900000, "craft w/ 4 Scarf’s Studies")
+    Talisman("Scarf's Thesis", "Scarf's Studies", Rarity.EPIC, 1900000, "craft w/ 4 Scarf’s Studies")
     Talisman("Master Skull Tier 1", None, Rarity.COMMON, -1, "250k from M1 Obsidian Chest")
     Talisman("Master Skull Tier 2", "Master Skull Tier 1", Rarity.COMMON, -1, "500k from M2 Obsidian Chest, craft w/ 4 Master Skull Tier 1")
     Talisman("Master Skull Tier 3", "Master Skull Tier 2", Rarity.UNCOMMON, 2000000, "2M from M3-M5 Obsidian Chest, craft w/ 4 Master Skull Tier 2")
@@ -234,7 +225,7 @@ def inittalismans():
     Talisman("Titanium Relic", "Titanium Artifact", Rarity.LEGENDARY, 4400000, "obtained via making 20 refined titanium & Titanium Artifact in The Forge")
     Talisman("Pulse Ring (Uncommon)", None, Rarity.UNCOMMON, 5000000, "craft w/ 256 Orb of Energy from Lava Fishing")
     Talisman("Bits Talisman", None, Rarity.RARE, 5800000, "purchased for 15k bits in the community center shop")
-    Talisman("Campfire God Badge", "Campfire Scion Badge", Rarity.NONE, 3800000, "Campfire Scion Badge & 1000 ench jungle logs [mastiff armor set, mana flux power orb, silky power (9x luxurious spool @724k) to survive trial]")
+    Talisman("Campfire God Badge", "Campfire Scion Badge", Rarity.LEGENDARY, 3800000, "Campfire Scion Badge & 1000 ench jungle logs [mastiff armor set, mana flux power orb, silky power (9x luxurious spool @724k) to survive trial]")
     Talisman("Master Skull Tier 4", "Master Skull Tier 3", Rarity.UNCOMMON, 6000000, "8M from M5-M7 Bedrock / Obsidian Chests, craft w/ 4 Master Skull Tier 3")
     Talisman("BeastMaster Crest (Epic)", "BeastMaster Crest (Rare)", Rarity.EPIC, 7100000, "craft w/ 4 ench ancient claws & 128 griffin feathers & Rare BeastMaster Crest")
     Talisman("Bat Person Artifact", "Bat Person Ring", Rarity.RARE, 7100000, "craft w/ Bat Person Artifact & 16 spooky shards & 128 ectoplasm")
@@ -243,16 +234,16 @@ def inittalismans():
     Talisman("Scarf's Grimoire", "Scarf's Thesis", Rarity.LEGENDARY, 8200000, "craft w/ 4 Scarf’s Thesis")
     Talisman("Auto Recombobulator", None, Rarity.LEGENDARY, 9100000, "obtained via Bedrock chest as a reward for completing the catacombs floor 7")
     Talisman("Survivor Cube", None, Rarity.RARE, 10000000, "get automatically at tarantula slayer 7")
-    Talisman("New Year Cake Bag (full)", "New Year Cake Bag (empty)", Rarity.UNCOMMON, 10800000, "54 unique cakes @200k each")
+    Talisman("New Year Cake Bag (full)", "New Year Cake Bag (empty)", Rarity.RARE, 10800000, "54 unique cakes @200k each. In an upcoming update it's likely that filling the bag will upgrade the rarity")
     Talisman("Potato Talisman", None, Rarity.COMMON, 11000000, "rare drop from Shiny Pig during SkyBlock’s anniversary event [June 10]")
-    Talisman("Hunter Ring", "Hunter Talisman", Rarity.NONE, 13700000, "wolf slayer 7, craft w/ Hunter Talisman & 265 golden teeth & 1 grizzly bait")
+    Talisman("Hunter Ring", "Hunter Talisman", Rarity.RARE, 13700000, "wolf slayer 7, craft w/ Hunter Talisman & 265 golden teeth & 1 grizzly bait")
     Talisman("BeastMaster Crest (Legendary)", "BeastMaster Crest (Epic)", Rarity.LEGENDARY, 14300000, "craft w/ 32 ench ancient claws & 256 griffin feathers & Epic BeastMaster Crest")
     Talisman("Bait Ring", None, Rarity.RARE, 15000000, "Ink Sac collection 8, craft w/ 288 ench ink sacs")
-    Talisman("Spider Atrocity", "Bait Ring", Rarity.EPIC, 8000000, "craft w/ 128 ench ink sac & 128 spiked bait & Bait Ring")
+    Talisman("Spiked Atrocity", "Bait Ring", Rarity.EPIC, 8000000, "craft w/ 128 ench ink sac & 128 spiked bait & Bait Ring")
     Talisman("Recombobulator on Legendary Talismans", None, Rarity.LEG_RECOMB, 5600000, "by this point using a recomb on any legendary talisman you already have would give more mp than buying a new talisman. Don’t proceed until all Legendary talismans have been recomb’ed")
-    Talisman("Recombobulator on Rare and Epic Talismans", "Recombobulator on Legendary Talismans", Rarity.RARE_EPIC_RECOMB, 5600000, "by this point using a recomb on any epic or rare talisman you already have would give more mp than buying a new talisman. Don’t proceed until all talismans Rare or better have been recomb’ed")
-    Talisman("Recombobulator on Uncommon Talismans", "Recombobulator on Rare and Epic Talismans", Rarity.UNCOMMON_RECOMB, 5600000, "by this point using a recomb on any uncommon talisman you already have would give more mp than buying a new talisman. Don’t proceed until all talismans Uncommon or better have been recomb’ed")
-    Talisman("Recombobulator on Common Talismans", "Recombobulator on Uncommon Talismans", Rarity.COMMON_RECOMB, 5600000, "by this point using a recomb on any talisman you already have would give more mp than buying a new talisman. Don’t proceed until all talismans have been recomb’ed, and any talisman after this point should be recomb’ed right away before getting another one")
+    Talisman("Recombobulator on Rare and Epic Talismans", None, Rarity.RARE_EPIC_RECOMB, 5600000, "by this point using a recomb on any epic or rare talisman you already have would give more mp than buying a new talisman. Don’t proceed until all talismans Rare or better have been recomb’ed")
+    Talisman("Recombobulator on Uncommon Talismans", None, Rarity.UNCOMMON_RECOMB, 5600000, "by this point using a recomb on any uncommon talisman you already have would give more mp than buying a new talisman. Don’t proceed until all talismans Uncommon or better have been recomb’ed")
+    Talisman("Recombobulator on Common Talismans", None, Rarity.COMMON_RECOMB, 5600000, "by this point using a recomb on any talisman you already have would give more mp than buying a new talisman. Don’t proceed until all talismans have been recomb’ed, and any talisman after this point should be recomb’ed right away before getting another one")
     Talisman("Pulse Ring (Rare)", "Pulse Ring (Uncommon)", Rarity.RARE, 15000000, "combine uncommon pulse ring in an anvil with Thunder in a Bottle 3 times")
     Talisman("Purple Jerry Talisman", "Blue Jerry Talisman", Rarity.EPIC, 18200000, "craft w/ 5 Blue Jerry Talismans")
     Talisman("Jacobus Register", None, Rarity.LEGENDARY, 21500000, "Obtained avia purchasing 10 additional; accessory bag slots from Jacobus")
@@ -271,13 +262,13 @@ def inittalismans():
     Talisman("Bingo Talisman", None, Rarity.COMMON, 33800000, "req Bingo Rank 1, can be purchased from the Bingo Shop for 100 Bingo Points")
     Talisman("Nether Artifact", None, Rarity.EPIC, 38000000, "available for purchase at the dark auction")
     Talisman("Wither Artifact", None, Rarity.EPIC, 46000000, "available for purchase at the dark auction")
-    Talisman("Wither Relic", None, Rarity.LEGENDARY, 8800000, "craft w/ Wither Artifact & 8 wither catalysts")
-    Talisman("Artifact of Power (empty)", None, Rarity.RARE, 22800000, "gemstone 10, craft w/ 32 Gemstone Mixture & Ring of Power")
+    Talisman("Wither Relic", "Wither Artifact", Rarity.LEGENDARY, 8800000, "craft w/ Wither Artifact & 8 wither catalysts")
+    Talisman("Artifact of Power (empty)", "Ring of Power", Rarity.RARE, 22800000, "gemstone 10, craft w/ 32 Gemstone Mixture & Ring of Power")
     Talisman("Artifact of Power (max gemstones)", "Artifact of Power (empty)", Rarity.EPIC, 53900000, "placing 1 of each perfect gemstone (minus Opal) into the guantlet")
     Talisman("Burststopper Talisman", None, Rarity.RARE, 54000000, "blaze slayer 3, craft w/ 128 Molten Powder & 6 refined titanium & 4 whipped magma cream")
-    Talisman("Burststopper Artifact", "Burststopper Talisman", Rarity.EPIC, 0, "blaze slayer 7, craft w/ Burststopper Talisman & 128 Molten Powder & 80 Whipped Magma Cream")
+    Talisman("Burststopper Artifact", "Burststopper Talisman", Rarity.EPIC, 67300000, "blaze slayer 7, craft w/ Burststopper Talisman & 128 Molten Powder & 80 Whipped Magma Cream")
     Talisman("Ender Artifact", None, Rarity.EPIC, 80000000, "available for purchase at the dark auction, resale on AH")
-    Talisman("Ender Relic", None, Rarity.LEGENDARY, 26700000, "enderman slayer 7, craft w/ Ender Artifact & Exceedingly Rare Ender Artifact Upgrader & 96 enchanted eye of ender & 128 enchanted obsidian")
+    Talisman("Ender Relic", "Ender Artifact", Rarity.LEGENDARY, 26700000, "enderman slayer 7, craft w/ Ender Artifact & Exceedingly Rare Ender Artifact Upgrader & 96 enchanted eye of ender & 128 enchanted obsidian")
     Talisman("Golden Jerry Artifact", "Purple Jerry Talisman", Rarity.LEGENDARY, 90000000, "craft w/ 5 Purple Jerry Talismans")
     Talisman("Master Skull Tier 6", "Master Skull Tier 5", Rarity.EPIC, 96000000, "craft w/ 4 Master Skull Tier 5")
     Talisman("Pulse Ring (Epic)", "Pulse Ring (Rare)", Rarity.EPIC, 100000000, "combine uncommon pulse ring in an anvil with Thunder in a Bottle 20 times")
@@ -286,7 +277,18 @@ def inittalismans():
     Talisman("Bingo Artifact", "Bingo Ring", Rarity.RARE, 284000000, "req Bingo Rank 3, can be purchased from the Bingo Shop for 150 Bingo Points")
     Talisman("Master Skull Tier 7", "Master Skull Tier 6", Rarity.LEGENDARY, 384000000, "craft w/ 4 Master Skull Tier 6")
     Talisman("Pulse Ring (Legendary)", "Pulse Ring (Epic)", Rarity.LEGENDARY, 500000000, "combine uncommon pulse ring in an anvil with Thunder in a Bottle 100 times")
+    Talisman("Crab Hat of Celebration (2020)", None, Rarity.SPECIAL, 15900000, "was only obtainable during the 1st anniversary event for Hypixel Skyblock")
+    Talisman("Crab Hat of Celebration (2022)", None, Rarity.SPECIAL, 2200000, "was only obtainable during the 3rd anniversary event for Hypixel Skyblock")
+    Talisman("Dante Talisman", None, Rarity.COMMON, 2200000, "was only available during Dante’s reign as Mayor, can only get from other players")
     Talisman("name", None, Rarity.NONE, 0, "description")
+
+
+def recursivetalismaninsert(talisman):
+    if talisman.previous is not None and not finaltalismans.__contains__(talisman.previous) and talisman.previous.cost == -1:
+        recursivetalismaninsert(talisman.previous)
+    finaltalismans.append(talisman)
+    if waitingtalismans.__contains__(talisman):
+        waitingtalismans.remove(talisman)
 
 
 if __name__ == '__main__':
@@ -298,22 +300,32 @@ if __name__ == '__main__':
 
     # shove up talisman upgrades which are less expensive than previous iteration
     # (requiring that you get the previous upgrade first)
-    # TODO fix when talisman and upgrade is same cost (feather artifact, cheetah talisman,
+    # TODO fix when talisman and upgrade is same cost (only with 3+ tiered talis?) (happens when pre-fixed list has upgrade before previous and it gets stuck because not picked up in final sort)
+    # TODO fix when talisman upgrade has +0 net mp
+    # TODO fix when talisman or upgrade has -1 cost (meaning worth skipping)
+    # TODO make all next and previous checks apply recursively to account for multiple tiers of talisman
     waitingtalismans = []
     for talisman in talismans:
         if talisman.previous is None and talisman.next is None:
             finaltalismans.append(talisman)
+        elif talisman.cost == -1:
+            waitingtalismans.append(talisman)
         elif talisman.previous is not None:
             if not finaltalismans.__contains__(talisman.previous):
-                waitingtalismans.append(talisman)
+                if talisman.previous.cost == -1:
+                    recursivetalismaninsert(talisman)
+                else:
+                    waitingtalismans.append(talisman)
             else:
                 finaltalismans.append(talisman)
         elif talisman.next is not None:
             if waitingtalismans.__contains__(talisman.next):
                 finaltalismans.append(talisman)
                 finaltalismans.append(talisman.next)
+                waitingtalismans.remove(talisman.next)
             else:
                 finaltalismans.append(talisman)
+
 
     print("PRE-FIXED")
     counter = 1
@@ -324,6 +336,12 @@ if __name__ == '__main__':
     print("FIXED")
     counter = 1
     for talisman in finaltalismans:
+        talisman.printme(counter)
+        counter += 1
+
+    print("STILL WAITING")
+    counter = 1
+    for talisman in waitingtalismans:
         talisman.printme(counter)
         counter += 1
 
