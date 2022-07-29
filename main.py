@@ -286,9 +286,10 @@ def inittalismans():
 def recursivetalismaninsert(talisman):
     if talisman.previous is not None and not finaltalismans.__contains__(talisman.previous) and talisman.previous.cost == -1:
         recursivetalismaninsert(talisman.previous)
-    finaltalismans.append(talisman)
-    if waitingtalismans.__contains__(talisman):
-        waitingtalismans.remove(talisman)
+    if talisman.cost != -1:
+        finaltalismans.append(talisman)
+        if waitingtalismans.__contains__(talisman):
+            waitingtalismans.remove(talisman)
 
 
 if __name__ == '__main__':
@@ -299,33 +300,40 @@ if __name__ == '__main__':
     talismans = sorted(talismans, key=cmp_to_key(compare))
 
     # shove up talisman upgrades which are less expensive than previous iteration
+    # shove up talisman upgrades which are less expensive than previous iteration
     # (requiring that you get the previous upgrade first)
-    # TODO fix when talisman and upgrade is same cost (only with 3+ tiered talis?) (happens when pre-fixed list has upgrade before previous and it gets stuck because not picked up in final sort)
-    # TODO fix when talisman upgrade has +0 net mp
-    # TODO fix when talisman or upgrade has -1 cost (meaning worth skipping)
-    # TODO make all next and previous checks apply recursively to account for multiple tiers of talisman
     waitingtalismans = []
     for talisman in talismans:
-        if talisman.previous is None and talisman.next is None:
-            finaltalismans.append(talisman)
-        elif talisman.cost == -1:
+        if talisman.cost == -1 or talisman.netMagicPower == 0:
             waitingtalismans.append(talisman)
+        elif talisman.previous is None and talisman.next is None:
+            finaltalismans.append(talisman)
         elif talisman.previous is not None:
             if not finaltalismans.__contains__(talisman.previous):
-                if talisman.previous.cost == -1:
+                if talisman.previous.cost == -1 or talisman.previous.netMagicPower == 0:
                     recursivetalismaninsert(talisman)
                 else:
                     waitingtalismans.append(talisman)
             else:
+                if talisman.previous.cost == -1:
+                    finaltalismans.remove(talisman.previous)
                 finaltalismans.append(talisman)
         elif talisman.next is not None:
-            if waitingtalismans.__contains__(talisman.next):
+            if waitingtalismans.__contains__(talisman.next) and talisman.next.cost != -1:
                 finaltalismans.append(talisman)
                 finaltalismans.append(talisman.next)
                 waitingtalismans.remove(talisman.next)
             else:
                 finaltalismans.append(talisman)
 
+    # Final iteration through waiting talismans
+    for talisman in waitingtalismans:
+        if talisman.cost != -1 and talisman.netMagicPower > 0:
+            finaltalismans.append(talisman)
+            waitingtalismans.remove(talisman)
+
+    # Final sort to fix budget after final waiting talisman check
+    finaltalismans = sorted(finaltalismans, key=cmp_to_key(compare))
 
     print("PRE-FIXED")
     counter = 1
